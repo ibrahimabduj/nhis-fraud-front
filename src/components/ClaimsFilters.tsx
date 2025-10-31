@@ -36,7 +36,7 @@ export function ClaimsFilters({ filters, onFiltersChange, onClear }: ClaimsFilte
 
   function handleScoreCategoryChange(value: string) {
     if (value === 'LOW') {
-      handleChange('minScore', '')
+      handleChange('minScore', '0')
       handleChange('maxScore', '25')
       handleChange('scoreCategory', 'LOW')
     } else if (value === 'MEDIUM') {
@@ -55,13 +55,14 @@ export function ClaimsFilters({ filters, onFiltersChange, onClear }: ClaimsFilte
   }
 
   const hasActiveFilters = 
-    filters.patientId || 
+    (filters.patientId && filters.patientId.trim()) || 
     filters.gender || 
-    filters.diagnosis || 
-    filters.minScore || 
-    filters.maxScore || 
+    (filters.diagnosis && filters.diagnosis.trim()) || 
+    (filters.minScore && filters.minScore.trim()) || 
+    (filters.maxScore && filters.maxScore.trim()) || 
     filters.startDate || 
-    filters.endDate
+    filters.endDate ||
+    filters.scoreCategory
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

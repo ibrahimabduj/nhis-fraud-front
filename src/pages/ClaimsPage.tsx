@@ -68,12 +68,24 @@ export function ClaimsPage() {
       sort: 'fraudScore,desc' 
     })
 
-    if (filters.patientId) params.append('patientId', filters.patientId)
+    if (filters.patientId?.trim()) params.append('patientId', filters.patientId.trim())
     if (filters.gender) params.append('gender', filters.gender)
-    if (searchQuery) params.append('diagnosis', searchQuery)
-    else if (filters.diagnosis) params.append('diagnosis', filters.diagnosis)
-    if (filters.minScore) params.append('minScore', filters.minScore)
-    if (filters.maxScore) params.append('maxScore', filters.maxScore)
+    
+    // Diagnosis: searchQuery takes precedence, but if empty, use filters.diagnosis
+    const diagnosisQuery = searchQuery.trim() || filters.diagnosis?.trim() || ''
+    if (diagnosisQuery) params.append('diagnosis', diagnosisQuery)
+    
+    // Score filters: only send if they have values and scoreCategory is not set
+    // When scoreCategory is set, min/max are already set by the filter component
+    if (filters.minScore?.trim()) {
+      const minScore = parseInt(filters.minScore, 10)
+      if (!isNaN(minScore)) params.append('minScore', String(minScore))
+    }
+    if (filters.maxScore?.trim()) {
+      const maxScore = parseInt(filters.maxScore, 10)
+      if (!isNaN(maxScore)) params.append('maxScore', String(maxScore))
+    }
+    
     if (filters.startDate) params.append('startDate', filters.startDate)
     if (filters.endDate) params.append('endDate', filters.endDate)
 
