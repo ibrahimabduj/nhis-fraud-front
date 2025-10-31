@@ -29,8 +29,8 @@ export async function postMultipart<T>(path: string, form: FormData, init?: Requ
   if (contentType.includes("application/json")) {
     return (await res.json()) as T
   }
-  // @ts-expect-error allow unknown response
-  return undefined as T
+  // Allow unknown response types (e.g., empty responses)
+  return undefined as unknown as T
 }
 
 export async function putJson<T>(path: string, body: unknown, init?: RequestInit): Promise<T> {
@@ -49,8 +49,8 @@ export async function putJson<T>(path: string, body: unknown, init?: RequestInit
     throw new Error(`PUT ${path} failed: ${res.status} ${text}`)
   }
   if (res.status === 204) {
-    // @ts-expect-error allow void
-    return undefined as T
+    // Allow void responses for 204 No Content
+    return undefined as unknown as T
   }
   return (await res.json()) as T
 }

@@ -55,7 +55,9 @@ export function FraudCategoryChart({ lowCount, mediumCount, highCount }: FraudCa
 
     // Apply colors from data
     series.slices.template.adapters.add('fill', (fill, target) => {
-      return target.dataItem?.dataContext?.fill || fill
+      // dataItem?.dataContext may be typed as {} by default in amCharts type defs, so use 'as any' to access 'fill'
+      const dataContext = target.dataItem?.dataContext as { fill?: am5.Color } | undefined
+      return dataContext?.fill || fill
     })
 
     // Configure slice appearance

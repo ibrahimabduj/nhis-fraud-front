@@ -84,7 +84,6 @@ export function FraudScoreBarChart({ data }: FraudScoreBarChartProps) {
         yAxis: valueAxis,
         valueYField: 'count',
         categoryXField: 'date',
-        wiresHidden: true,
         fill: am5.color('#3b82f6'),
       })
     )
