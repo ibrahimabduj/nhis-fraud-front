@@ -29,4 +29,13 @@ export default defineConfig({
       },
     },
   },
+  preview: {
+    host: true,
+    port: 3000,
+    allowedHosts: [
+      'nhis-fraud-front.onrender.com',
+      'localhost',
+      '.onrender.com',
+    ],
+  },
 })
